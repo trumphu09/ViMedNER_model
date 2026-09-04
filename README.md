@@ -1,6 +1,6 @@
 # ALESRD: Augmenting Long Entity-Span, Rare and Difficult
 
-This repository contains the complete source code, experimental logs, and documentation for **ALESRD**, a specialized architecture proposed to optimize Vietnamese Biomedical Named Entity Recognition (ViMedNER).
+This repository contains the complete source code, experimental logs, and documentation for **ALESRD**, a specialized architecture proposed to optimize Vietnamese Biomedical Named Entity Recognition.
 
 ---
 
@@ -20,13 +20,13 @@ An in-depth exploratory analysis of the ViMedNER biomedical dataset reveals crit
 
 ### Baseline Limitations
 
-A standard baseline model utilizing `vinai/phobert-base-v2` paired with a token-level Linear classifier yields an overall F1-score of 65.16%. The baseline struggles significantly with long, rare, and difficult entity spans (e.g., `nguyen_nhan_benh`), and fails to capture structured boundaries efficiently in prominent categories like `ten_benh`.
+A standard baseline model utilizing `vinai/phobert-base-v2` paired with a token-level Linear classifier yields an overall F1-score of 65.16%. The baseline struggles significantly with long, rare entities.
 
 ---
 
 ## 2. Proposed Architecture (ALESRD-1.0)
 
-Naively combining Focal Loss with a CRF layer induces gradient conflicts, as Focal Loss down-weights easy examples independently per token, disrupting the sequence-level probabilistic optimization enforced by the CRF.
+Naively combining Focal Loss with a CRF layer induces gradient conflicts, as Focal Loss down-weights easy examples independently per token, disrupting the sequence-level probabilistic optimization.
 
 To overcome this, **ALESRD-1.0** introduces a harmonized auxiliary weighting mechanism:
 
@@ -54,35 +54,11 @@ Performance comparisons across all evaluated configurations on the benchmark tes
 
 | Model | Precision | Recall | F1-Score |
 | --- | --- | --- | --- |
-| **Baseline (PhoBERT + Linear)**<br> | 60.41%
-
- | 70.72%
-
- | 65.16%
-
- |
-| **Focal Loss**<br> | 66.44%
-
- | 72.91%
-
- | 69.52%
-
- |
-| **Focal + CRF**<br> | 70.32%
-
- | 72.53%
-
- | 71.41%
-
- |
-| **CRF Only**<br> | 71.68%
-
- | 72.56%
-
- | 72.12%
-
- |
-| **ALESRD-1.0 (Proposed)**<br> | **71.16%**<br> | **74.67%**<br> | **72.87%**<br> |
+| **Baseline (PhoBERT + Linear)** | 60.41% | 70.72% | 65.16% |
+| **Focal Loss** | 66.44% | 72.91% | 69.52% |
+| **Focal + CRF** | 70.32% | 72.53% | 71.41% |
+| **CRF Only** | 71.68% | 72.56% | 72.12% |
+| **ALESRD-1.0 (Proposed)** | **71.16%** | **74.67%** | **72.87%** |
 
 ### Key Achievements
 
@@ -92,7 +68,7 @@ Performance comparisons across all evaluated configurations on the benchmark tes
 * **Breakthrough on Rare Entities:** The F1-score for `nguyen_nhan_benh` jumps by +23.13% due to tailored penalty weighting and span-aware supervision.
 
 
-* **Mitigation of Span Fragmentation:** Eliminates token-level decoupling, successfully capturing long medical entities (achieving a 30.30% F1, a +9.47% gain over pure CRF on ultra-long spans $\ge 8$ words).
+* **Mitigation of Span Fragmentation:** Eliminates token-level decoupling, successfully capturing long medical entities (achieving a 30.30% F1, a +9.47% gain over pure CRF on ultra-long spans).
 
 
 * **Uniform Gains:** Yields steady performance enhancements ranging from 4.6% to nearly 10% across common categories.
@@ -106,7 +82,7 @@ Performance comparisons across all evaluated configurations on the benchmark tes
 * **Computational Trade-off:** Training and inference overheads are higher than the baseline due to auxiliary weight calculations and Viterbi decoding.
 
 
-* **Absolute Performance Ceiling on Hard Entities:** While relative gains are substantial, absolute metrics for rare classes remain constrained by dataset noise and annotation inconsistencies, indicating limits where deeper semantic reasoning is required.
+* **Absolute Performance Ceiling on Hard Entities:** While relative gains are substantial, absolute metrics for rare classes remain constrained by dataset noise and annotation inconsistencies.
 
 
 
